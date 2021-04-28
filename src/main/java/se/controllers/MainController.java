@@ -2,14 +2,11 @@ package se.controllers;
 
 import com.github.sypexgeo.SxRestClient;
 import com.github.sypexgeo.model.SxGeoResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import se.entity.Room;
-import se.servise.RoomRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.Inet4Address;
@@ -36,10 +33,6 @@ public class MainController {
 //        model.addAttribute("room", new Room());
 //        return "addNewRoom";
 //    }
-
-
-
-
 
 
     @GetMapping("")
