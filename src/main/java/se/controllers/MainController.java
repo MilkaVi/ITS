@@ -2,11 +2,12 @@ package se.controllers;
 
 import com.github.sypexgeo.SxRestClient;
 import com.github.sypexgeo.model.SxGeoResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import se.entity.Room;
+import se.servise.RoomRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.Inet4Address;
@@ -17,32 +18,45 @@ import java.util.Enumeration;
 import java.util.Locale;
 
 @Controller
+@RequestMapping("/rooms")
 public class MainController {
-//    @Autowired
-//    RoomRepository roomRepository;
-//
-//    @GetMapping("/rooms")
-//    public String getAllRooms(Model model) {
-//        model.addAttribute("rooms", roomRepository.findAll());
-//        return "rooms";
-//    }
-//
-//
-//    @GetMapping("/rooms/new")
-//    public String addNewRoom(Model model) {
-//        model.addAttribute("room", new Room());
-//        return "addNewRoom";
-//    }
+    @Autowired
+    RoomRepository roomRepository;
 
-
-    @GetMapping("")
-    public String sayHello(HttpServletRequest request, Model model) {
-        System.out.println(getLocalIpAddress());
-        SxGeoResult result = SxRestClient.create("YZ882").get(getLocalIpAddress());
-        System.out.println(result.city != null ? result.city.name.ru() : null);
-        model.addAttribute("ligth", "on");
-        return "hello_world";
+    @GetMapping()
+    public String getAllRooms(Model model) {
+        model.addAttribute("rooms", roomRepository.findAll());
+        return "rooms";
     }
+
+
+    @GetMapping("new")
+    public String addNewRoomPage(Model model) {
+        model.addAttribute("room", new Room());
+        return "addNewRoom";
+    }
+
+
+    @PostMapping("")
+    public String addNewRoom(
+            @ModelAttribute Room room, Model model) {
+        System.out.println("111");
+        System.out.println("room  " + room);
+        roomRepository.save(room);
+        return "redirect:/rooms";
+
+    }
+
+
+
+//    @GetMapping("")
+//    public String sayHello(HttpServletRequest request, Model model) {
+//        //System.out.println(getLocalIpAddress());
+//       // SxGeoResult result = SxRestClient.create("YZ882").get(getLocalIpAddress());
+//       // System.out.println(result.city != null ? result.city.name.ru() : null);
+//        model.addAttribute("ligth", "on");
+//        return "hello_world";
+//    }
 
     public static String getLocalIpAddress() {
         try {

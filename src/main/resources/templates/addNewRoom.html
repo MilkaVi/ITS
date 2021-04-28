@@ -15,7 +15,7 @@
 
     <div class="col-md-8 order-md-1" align="center">
 
-        <form action="rooms" th:object="${room}" method="POST" enctype="multipart/form-data">
+        <form th:action="rooms" th:object="${room}" method="POST" >
             <div align="center" class="row">
 
                 <div class="col-md-3 mb-3">
@@ -23,14 +23,19 @@
                     <input type="text" class="form-control" th:field="*{name}" required>
 
                 </div>
-                <div class="MocG8c B9IrJb LMgvRb KKjvXb" jsname="wQNmvb" jsaction="" data-value="ru" aria-selected="true"
-                     tabindex="0" role="option"><div class="kRoyt MbhUzd ziS7vd" jsname="ksKsZd" style="top: 18.6px; left:
-                     70px; width: 86px; height: 86px;">
 
-                </div><span jsslot="" class="vRMGwf oJeWuf">Русский</span></div>
+                <div class="col-md-3 mb-3">
+                    <label>Country</label>
+                    <input type="text" class="form-control" th:field="*{country}" required>
+
+                </div>
 
 
+<!--                <div class="MocG8c B9IrJb LMgvRb KKjvXb" jsname="wQNmvb" jsaction="" data-value="ru" aria-selected="true"-->
+<!--                     tabindex="0" role="option"><div class="kRoyt MbhUzd ziS7vd" jsname="ksKsZd" style="top: 18.6px; left:-->
+<!--                     70px; width: 86px; height: 86px;">-->
 
+<!--                </div><span jsslot="" class="vRMGwf oJeWuf">Русский</span></div>-->
 
 
             </div>
