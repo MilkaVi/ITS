@@ -15,7 +15,7 @@
 
     <div class="col-md-8 order-md-1" align="center">
 
-        <form th:action="rooms" th:object="${room}" method="POST" >
+        <form th:method="POST" th:action="@{/rooms}" th:object="${room}" >
             <div align="center" class="row">
 
                 <div class="col-md-3 mb-3">

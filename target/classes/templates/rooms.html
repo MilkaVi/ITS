@@ -14,6 +14,37 @@
        th:href="@{/rooms/new}">Add new file</a>
 </div>
 
+<table class="table" style="">
+
+    <thead class="thead-inverse">
+    <tr>
+        <th> Room name</th>
+        <th> Room country</th>
+        <th> Enter</th>
+    </tr>
+    </thead>
+
+    <tr th:each="room : ${rooms}">
+        <td th:utext="${room.getName()}"></td>
+
+
+        <td th:utext="${room.getCountry()}"></td>
+        <td>
+
+
+            <form th:method="GET" th:action="@{/rooms/{id}(id=${room.getId()})}">
+                <input class="btn btn-secondary btn-lg btn-block" type="submit" value="ENTER"/>
+            </form>
+
+        </td>
+
+    </tr>
+
+</table>
+
+
+
+
 
 </body>
 </html>

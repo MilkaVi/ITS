@@ -1,4 +1,6 @@
 package se.entity;
+import org.hibernate.annotations.SelectBeforeUpdate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +13,15 @@ public class Room {
     private int id;
     private String name;
     private String country;
+    private boolean state;
+
+    public boolean isState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
 
     public int getId() {
         return id;
@@ -36,12 +47,11 @@ public class Room {
         this.country = country;
     }
 
-    @Override
-    public String toString() {
-        return "Room{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                '}';
+    public void turn(){
+        if(isState())
+            setState(false);
+        else
+            setState(true);
     }
+
 }
