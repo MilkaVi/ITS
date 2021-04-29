@@ -15,7 +15,7 @@
 
     <div class="col-md-8 order-md-1" align="center">
 
-        <form th:method="POST" th:action="@{/rooms}" th:object="${room}" >
+        <form th:method="POST" th:action="@{/rooms}" th:object="${room}">
             <div align="center" class="row">
 
                 <div class="col-md-3 mb-3">
@@ -25,17 +25,30 @@
                 </div>
 
                 <div class="col-md-3 mb-3">
-                    <label>Country</label>
-                    <input type="text" class="form-control" th:field="*{country}" required>
+
+<!--                    <label>Country</label>-->
+<!--                    <input type="text" class="form-control" th:field="*{country}" required>-->
 
                 </div>
 
+                <div class="form-group">
+                    <select name="category">
+                        <option  th:each="country : ${countres}">
+                            <td th:utext="${country.toString()}"></td>
 
-<!--                <div class="MocG8c B9IrJb LMgvRb KKjvXb" jsname="wQNmvb" jsaction="" data-value="ru" aria-selected="true"-->
-<!--                     tabindex="0" role="option"><div class="kRoyt MbhUzd ziS7vd" jsname="ksKsZd" style="top: 18.6px; left:-->
-<!--                     70px; width: 86px; height: 86px;">-->
+                        </option >
+                    </select>
+                </div>
 
-<!--                </div><span jsslot="" class="vRMGwf oJeWuf">Русский</span></div>-->
+
+
+
+
+                <!--                <div class="MocG8c B9IrJb LMgvRb KKjvXb" jsname="wQNmvb" jsaction="" data-value="ru" aria-selected="true"-->
+                <!--                     tabindex="0" role="option"><div class="kRoyt MbhUzd ziS7vd" jsname="ksKsZd" style="top: 18.6px; left:-->
+                <!--                     70px; width: 86px; height: 86px;">-->
+
+                <!--                </div><span jsslot="" class="vRMGwf oJeWuf">Русский</span></div>-->
 
 
             </div>
@@ -46,7 +59,7 @@
         </form>
     </div>
     <footer class="my-5 pt-5 text-muted text-center text-small">
-        <p class="mb-1">&copy; 2020-2021</p>
+        <p class="mb-1">&copy; 2021-2022</p>
     </footer>
 </div>
 

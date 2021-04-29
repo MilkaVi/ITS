@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import se.Countres;
 import se.entity.Room;
 import se.servise.RoomRepository;
 
@@ -40,6 +41,7 @@ public class MainController {
     @GetMapping("new")
     public String addNewRoomPage(Model model) {
         model.addAttribute("room", new Room());
+        model.addAttribute("countres", Countres.countres);
         return "addNewRoom";
     }
 
@@ -84,11 +86,12 @@ public class MainController {
 
     @GetMapping("/h")
     public String sayHello(HttpServletRequest request, Model model) {
-        System.out.println(request.getRemoteAddr());
-        SxGeoResult result = SxRestClient.create("YZ882").get("37.45.115.113");
-        System.out.println(result.city != null ? result.country.name.ru() : null);
-        model.addAttribute("ligth", "on");
-        return "hello_world";
+//        System.out.println(request.getRemoteAddr());
+//        SxGeoResult result = SxRestClient.create("YZ882").get("37.45.115.113");
+//        System.out.println(result.city != null ? result.country.name.ru() : null);
+//        model.addAttribute("ligth", "on");
+//        return "hello_world";
+        return "lang";
     }
 
 
