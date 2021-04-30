@@ -11,8 +11,37 @@
 
 <div style="display: flex; justify-content: left; margin-top: 10px; ">
     <a class="btn btn-lg btn-primary btn-block"
-       th:href="@{/rooms/new}">Add new file</a>
+       th:href="@{/rooms/new}">Add new room</a>
 </div>
+
+<table class="table" style="">
+
+    <thead class="thead-inverse">
+    <tr>
+        <th> Room name</th>
+        <th> Room country</th>
+        <th> Enter</th>
+    </tr>
+    </thead>
+
+    <tr th:each="room : ${rooms}">
+        <td th:utext="${room.getName()}"></td>
+
+
+        <td th:utext="${room.getCountry()}"></td>
+        <td>
+
+
+            <form th:method="GET" th:action="@{/rooms/{id}(id=${room.getId()})}">
+                <input class="btn btn-secondary btn-lg btn-block" type="submit" value="ENTER"/>
+            </form>
+
+        </td>
+
+    </tr>
+
+</table>
+
 
 
 </body>

@@ -1,10 +1,13 @@
 package se.controllers;
 
-import com.github.sypexgeo.SxRestClient;
-import com.github.sypexgeo.model.SxGeoResult;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CountryResponse;
+import com.maxmind.geoip2.record.Country;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -14,19 +17,24 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import se.Countres;
 import se.entity.Room;
 import se.servise.RoomRepository;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.Inet4Address;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Locale;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/rooms")
 public class MainController {
+
 
     @Autowired
     RoomRepository roomRepository;
@@ -55,27 +63,32 @@ public class MainController {
 
 
     @GetMapping("{id}")
-    public String update(@PathVariable("id") int id,HttpServletRequest request,
-                         Model model) {
-        if (countryCheck(request, id)) {
+    public String update(@PathVariable("id") int id, HttpServletRequest request,
+                         Model model) throws IOException, GeoIp2Exception {
+        if (countryCheck( id)) {
             model.addAttribute("room", roomRepository.findById(id));
             return "room";
         }
         return "403";
     }
 
-    @PostMapping("/switch")
-    public String switchLight(Locale locale,Integer id, Model model
-                              ) {
-        Room room = roomRepository.findById(id).get();
-        System.out.println(room.getName() + " " + room.isState() );
-        room.turn();
-        System.out.println(room.getName() + " " + room.isState() );
-        roomRepository.setFixedFirstnameFor(room.isState(), id);
-        model.addAttribute("room", room);
-        return "turn";
 
+    @MessageMapping("/turning")
+    @SendTo("/turning")
+    public Room getMessages(Integer id) {
+        Room room = roomRepository.findById(id).get();
+        System.out.println(room.getName() + " " + room.isState());
+        room.turn();
+        System.out.println(room.getName() + " " + room.isState());
+        roomRepository.setFixedFirstnameFor(room.isState(), id);
+        return room;
     }
+
+
+
+
+
+
 
 
     @PostMapping("/rate")
@@ -84,25 +97,22 @@ public class MainController {
     }
 
 
-    @GetMapping("/h")
-    public String sayHello(HttpServletRequest request, Model model) {
-//        System.out.println(request.getRemoteAddr());
-//        SxGeoResult result = SxRestClient.create("YZ882").get("37.45.115.113");
-//        System.out.println(result.city != null ? result.country.name.ru() : null);
-//        model.addAttribute("ligth", "on");
-//        return "hello_world";
-        return "lang";
-    }
 
 
-    public boolean countryCheck(HttpServletRequest request, Integer id){
-        System.out.println("1 "+request.getRemoteAddr());
-        System.out.println("2 " +fetchClientIpAddr());
-        SxGeoResult result = SxRestClient.create("YZ882").get(fetchClientIpAddr());
-        System.out.println(result.city != null ? result.country.name.ru() : null);
-        if(result.city == null)
-            return false;
-        return result.country.name.ru().equals(roomRepository.findById(id).get().getCountry());
+    public boolean countryCheck(Integer id) throws IOException, GeoIp2Exception {
+        if (fetchClientIpAddr().equals("127.0.0.1"))
+            return true;
+
+        File dbFile = new File("GeoLite2-Country.mmdb");
+        DatabaseReader reader = new DatabaseReader.Builder(dbFile).build();
+        InetAddress ipAddress = InetAddress.getByName("37.45.115.113");
+        CountryResponse response = reader.country(ipAddress);
+        Country country = response.getCountry();
+        System.out.println("Country Name: " + country.getName());
+
+        return country.getName().equals(roomRepository.findById(id).get().getCountry());
+
+
     }
 
 
@@ -113,7 +123,6 @@ public class MainController {
         Assert.isTrue(ip.chars().filter($ -> $ == '.').count() == 3, "Illegal IP: " + ip);
         return ip;
     }
-
 
 
 }

@@ -1,36 +1,46 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
 <html>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/script.js"></script>
 </head>
 <body>
-<h1>
-    Hello please login to this application
-</h1>
-<script>
+<h1>Simple chat</h1>
+<div class="chat_window">
+    <div class="top_menu">
+        <div class="buttons">
+            <div class="button close"></div>
+            <div class="button minimize"></div>
+            <div class="button maximize"></div>
+        </div>
+        <div class="title">Chat</div>
+    </div>
+    <ul class="messages"></ul>
+    <div class="bottom_wrapper clearfix">
+        <div class="message_input_wrapper">
+            <input id="message_input_value" class="message_input" placeholder="Type your message here..." />
+        </div>
+        <div class="send_message">
+            <div class="icon"></div>
 
-    function login(){
-        var username = $("#username").val();
-        var password = $("#password").val();
+        </div>
 
-        $.post('login', { username : username , password : password }, function(data) {
-            $('#results').html(data).hide().slideDown('slow');
-        } );
-    }
-
-</script>
-Username : <input id="username" type="text" />
-Password : <input id="password" type="password" />
-<input name="send" type="submit" value="Click me" onclick="login()" />
-<form name="next" action="auth/details" method="get">
-    <input name="send" type="submit" value="Go Through"/>
-</form>
-
-
-
-
-<div id="results" />
+        <button onclick="connect()">Connect to chat</button>
+        <button onclick="sendMessage()" class="text">Send</button>
+        <button onclick="disconnect()">Disconnect from chat</button>
+    </div>
+</div>
+<div id="message_template" class="message_template">
+    <li class="message"><div class="avatar"></div>
+        <div class="text_wrapper">
+            <div class="text"></div>
+        </div></li>
+</div>
 </body>
 </html>

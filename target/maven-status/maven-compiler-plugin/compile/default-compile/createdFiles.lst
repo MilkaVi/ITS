@@ -1,3 +1,10 @@
-se\Main.class
+se\entity\Room.class
+se\hello\Greeting.class
+se\servise\RoomRepository.class
+se\config\WebSocketConfig.class
+se\hello\GreetingController.class
+se\Countres.class
 se\controllers\MainController.class
+se\hello\HelloMessage.class
 se\PO.class
+se\Main.class
