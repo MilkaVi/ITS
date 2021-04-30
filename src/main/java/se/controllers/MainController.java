@@ -5,7 +5,6 @@ import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CountryResponse;
 import com.maxmind.geoip2.record.Country;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -17,18 +16,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import se.Countres;
 import se.entity.Room;
 import se.servise.RoomRepository;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Locale;
 import java.util.Optional;
 
 @Controller
@@ -65,7 +57,7 @@ public class MainController {
     @GetMapping("{id}")
     public String update(@PathVariable("id") int id, HttpServletRequest request,
                          Model model) throws IOException, GeoIp2Exception {
-        if (countryCheck( id)) {
+        if (countryCheck(id)) {
             model.addAttribute("room", roomRepository.findById(id));
             return "room";
         }
@@ -85,18 +77,10 @@ public class MainController {
     }
 
 
-
-
-
-
-
-
     @PostMapping("/rate")
     public String rateHandler() {
         return "redirect:/rooms";
     }
-
-
 
 
     public boolean countryCheck(Integer id) throws IOException, GeoIp2Exception {
