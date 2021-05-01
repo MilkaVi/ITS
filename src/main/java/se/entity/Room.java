@@ -1,5 +1,4 @@
 package se.entity;
-import org.hibernate.annotations.SelectBeforeUpdate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +13,14 @@ public class Room {
     private String name;
     private String country;
     private boolean state;
+
+    public Room(String name, String country) {
+        this.name = name;
+        this.country = country;
+    }
+
+    public Room() {
+    }
 
     public boolean isState() {
         return state;

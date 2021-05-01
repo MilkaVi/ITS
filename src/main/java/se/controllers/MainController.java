@@ -5,6 +5,7 @@ import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CountryResponse;
 import com.maxmind.geoip2.record.Country;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -13,15 +14,19 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import se.Countres;
+import org.springframework.web.server.ResponseStatusException;
+import se.config.Countres;
 import se.entity.Room;
 import se.servise.RoomRepository;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Controller
 @RequestMapping("/rooms")
@@ -32,10 +37,14 @@ public class MainController {
     RoomRepository roomRepository;
 
     @GetMapping()
-    public String getAllRooms(Model model) {
+    public String getAllRooms(Model model, @RequestParam(value = "messege", defaultValue = "") String messege) {
+        System.out.println("count "+roomRepository.count());
+        model.addAttribute("messege", messege);
         model.addAttribute("rooms", roomRepository.findAll());
         return "rooms";
     }
+
+
 
 
     @GetMapping("new")
@@ -57,11 +66,15 @@ public class MainController {
     @GetMapping("{id}")
     public String update(@PathVariable("id") int id, HttpServletRequest request,
                          Model model) throws IOException, GeoIp2Exception {
+        if (!roomRepository.findById(id).isPresent())
+            throw new ResponseStatusException(NOT_FOUND, "Unable to find resource");
+
+
         if (countryCheck(id)) {
             model.addAttribute("room", roomRepository.findById(id));
             return "room";
         }
-        return "403";
+        return "redirect:/rooms?messege=error";
     }
 
 
@@ -69,9 +82,7 @@ public class MainController {
     @SendTo("/turning")
     public Room getMessages(Integer id) {
         Room room = roomRepository.findById(id).get();
-        System.out.println(room.getName() + " " + room.isState());
         room.turn();
-        System.out.println(room.getName() + " " + room.isState());
         roomRepository.setFixedFirstnameFor(room.isState(), id);
         return room;
     }
@@ -89,12 +100,11 @@ public class MainController {
 
         File dbFile = new File("GeoLite2-Country.mmdb");
         DatabaseReader reader = new DatabaseReader.Builder(dbFile).build();
-        InetAddress ipAddress = InetAddress.getByName("37.45.115.113");
+        InetAddress ipAddress = InetAddress.getByName(fetchClientIpAddr());
         CountryResponse response = reader.country(ipAddress);
         Country country = response.getCountry();
-        System.out.println("Country Name: " + country.getName());
 
-        return country.getName().equals(roomRepository.findById(id).get().getCountry());
+        return country.getName().equalsIgnoreCase(roomRepository.findById(id).get().getCountry());
 
 
     }

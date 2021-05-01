@@ -6,6 +6,28 @@
     <title>Rooms</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css"
           integrity="2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+    <style>
+        .alert {
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+    </style>
 </head>
 <body>
 
@@ -13,6 +35,15 @@
     <a class="btn btn-lg btn-primary btn-block"
        th:href="@{/rooms/new}">Add new room</a>
 </div>
+
+<div class="alert" th:if="not ${messege.isEmpty()}">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">×</span>
+    <div style="text-align: center; color: #fff; font-size: 1.25rem;"> <p >Sorry. You do not have access to the room</p> </div>
+</div>
+
+
+
+
 
 <table class="table" style="">
 
