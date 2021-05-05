@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Countres {
-    public static ArrayList <String> countres=new ArrayList<>(Arrays.asList("AALAND ISLANDS",
+    public static ArrayList<String> countres = new ArrayList<>(Arrays.asList("AALAND ISLANDS",
             "AFGHANISTAN",
             "ALBANIA",
             "ALGERIA",

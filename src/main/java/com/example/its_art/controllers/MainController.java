@@ -4,7 +4,6 @@ import com.example.its_art.config.Countres;
 import com.example.its_art.entity.Room;
 import com.example.its_art.servise.RoomRepository;
 import com.maxmind.geoip2.DatabaseReader;
-import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CountryResponse;
 import com.maxmind.geoip2.record.Country;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -43,8 +41,6 @@ public class MainController {
     }
 
 
-
-
     @GetMapping("new")
     public String addNewRoomPage(Model model) {
         model.addAttribute("room", new Room());
@@ -55,15 +51,15 @@ public class MainController {
 
     @PostMapping("")
     public String addNewRoom(
-            @ModelAttribute Room room, Model model) {
+            @ModelAttribute Room room) {
         roomRepository.save(room);
         return "redirect:/rooms";
     }
 
 
     @GetMapping("{id}")
-    public String update(@PathVariable("id") int id, HttpServletRequest request,
-                         Model model) throws IOException, GeoIp2Exception {
+    public String update(@PathVariable("id") int id,
+                         Model model) throws IOException {
         if (!roomRepository.findById(id).isPresent())
             throw new ResponseStatusException(NOT_FOUND, "Unable to find resource");
 
