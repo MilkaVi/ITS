@@ -1,0 +1,69 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+
+    <title>Add new room</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+</head>
+
+<body>
+
+<div class="container" align="center">
+
+    <div class="col-md-8 order-md-1" align="center">
+
+        <form th:method="POST" th:action="@{/rooms}" th:object="${room}">
+            <div align="center" class="row">
+
+                <div class="col-md-3 mb-3">
+                    <label>Name</label>
+                    <input type="text" class="form-control" th:field="*{name}" required>
+
+                </div>
+
+                <div class="col-md-3 mb-3">
+
+<!--                    <label>Country</label>-->
+<!--                    <input type="text" class="form-control" th:field="*{country}" required>-->
+
+                </div>
+
+                <div class="form-group col-md-4" >
+                    <label for="inputState">Country</label>
+                    <select id="inputState" class="form-control" th:field="*{country}">
+                        <option  th:each="country : ${countres}" th:utext="${country.toString()}" th:value="${country.toString()}">
+                        </option >
+                    </select>
+                </div>
+
+
+
+
+
+
+
+                <!--                <div class="MocG8c B9IrJb LMgvRb KKjvXb" jsname="wQNmvb" jsaction="" data-value="ru" aria-selected="true"-->
+                <!--                     tabindex="0" role="option"><div class="kRoyt MbhUzd ziS7vd" jsname="ksKsZd" style="top: 18.6px; left:-->
+                <!--                     70px; width: 86px; height: 86px;">-->
+
+                <!--                </div><span jsslot="" class="vRMGwf oJeWuf">Русский</span></div>-->
+
+
+            </div>
+
+            <hr class="mb-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Add new room</button>
+
+        </form>
+    </div>
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2021-2022</p>
+    </footer>
+</div>
+
+</body>
+
+</html>
