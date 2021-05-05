@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -91,16 +92,19 @@ public class MainController {
     }
 
 
-    public boolean countryCheck(Integer id) throws IOException, GeoIp2Exception {
-        if (fetchClientIpAddr().equals("127.0.0.1"))
-            return true;
+    public boolean countryCheck(Integer id) throws IOException {
 
         File dbFile = new File("GeoLite2-Country.mmdb");
         DatabaseReader reader = new DatabaseReader.Builder(dbFile).build();
-        InetAddress ipAddress = InetAddress.getByName(fetchClientIpAddr());
-        CountryResponse response = reader.country(ipAddress);
+        InetAddress ipAddress = null;
+        CountryResponse response = null;
+        try {
+            ipAddress = InetAddress.getByName(fetchClientIpAddr());
+            response = reader.country(ipAddress);
+        } catch (Exception e) {
+            return true;
+        }
         Country country = response.getCountry();
-
         return country.getName().equalsIgnoreCase(roomRepository.findById(id).get().getCountry());
 
 
