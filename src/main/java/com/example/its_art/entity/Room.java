@@ -19,6 +19,12 @@ public class Room {
         this.country = country;
     }
 
+    public Room(int id, String name, String country) {
+        this.id = id;
+        this.name = name;
+        this.country = country;
+    }
+
     public Room() {
     }
 

@@ -21,23 +21,22 @@ function connect() {
 let id = null;
 
 function draw(side, text) {
-
-
     $('#results').html(text).hide().slideDown('fast');
-
     $('#first').html(text).hide();
-
 }
+
+function getId(){
+    id = $("#id").val();
+}
+function sendMessage() {
+    stompClient.send("/turning", {}, id);
+}
+
+
+
 
 
 function disconnect() {
     stompClient.disconnect();
 }
 
-function getId(){
-    id = $("#id").val();
-}
-
-function sendMessage() {
-        stompClient.send("/turning", {}, id);
-}

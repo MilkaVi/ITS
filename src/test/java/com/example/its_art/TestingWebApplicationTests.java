@@ -2,7 +2,7 @@ package com.example.its_art;
 
 import com.example.its_art.controllers.MainController;
 import com.example.its_art.entity.Room;
-import com.example.its_art.servise.RoomRepository;
+import com.example.its_art.repository.RoomRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.server.ResponseStatusException;
-
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -50,8 +49,8 @@ public class TestingWebApplicationTests {
 
     @Test
     public void givenRooms_whenGetRooms_thenStatus200() throws Exception {
-        Room room1 = createRoom("test room", "BELARUS");
-        Room room2 =createRoom("test room2", "RUSSIA");
+        createRoom("test room", "BELARUS");
+        createRoom("test room2", "RUSSIA");
         mockMvc.perform(
                 get("/rooms"))
                 .andExpect(status().isOk())
@@ -59,7 +58,6 @@ public class TestingWebApplicationTests {
                 .andExpect(content().string(containsString("BELARUS")))
                 .andExpect(content().string(containsString("test room2")))
                 .andExpect(content().string(containsString("RUSSIA")));
-
     }
 
 
@@ -79,7 +77,8 @@ public class TestingWebApplicationTests {
         mockMvc.perform(
                 get("/rooms/1"))
                 .andExpect(status().isNotFound())
-                .andExpect(mvcResult -> mvcResult.getResolvedException().getClass().equals(ResponseStatusException.class));
+                .andExpect(mvcResult -> mvcResult.getResolvedException()
+                        .getClass().equals(ResponseStatusException.class));
 
     }
 
