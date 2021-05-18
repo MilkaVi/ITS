@@ -21,77 +21,67 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class TestingWebApplicationTests {
 
-    @Autowired
-    MainController mainController;
-
-    @Autowired
-    RoomRepository roomRepository;
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @AfterEach
-    public void resetDb() {
-        roomRepository.deleteAll();
-    }
-
-    private Room createRoom(String name, String country){
-        Room room = new Room(name, country);
-        return roomRepository.save(room);
-    }
-
-
-    @Test
-    public void contextLoads() {
-        assertThat(mainController).isNotNull();
-    }
-
-
-    @Test
-    public void givenRooms_whenGetRooms_thenStatus200() throws Exception {
-        createRoom("test room", "BELARUS");
-        createRoom("test room2", "RUSSIA");
-        mockMvc.perform(
-                get("/rooms"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("test room")))
-                .andExpect(content().string(containsString("BELARUS")))
-                .andExpect(content().string(containsString("test room2")))
-                .andExpect(content().string(containsString("RUSSIA")));
-    }
-
-
-    @Test
-    public void givenId_whenGetExistingRoom_thenStatus200andRoomReturned() throws Exception {
-        long id = createRoom("test room", "BELARUS").getId();
-        mockMvc.perform(
-                get("/rooms/{id}", id))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("test room")))
-                .andExpect(content().string(containsString("BELARUS")));
-    }
-
-    @Test
-    public void givenId_whenGetNotExistingRoom_thenStatus404anExceptionThrown() throws Exception {
-
-        mockMvc.perform(
-                get("/rooms/1"))
-                .andExpect(status().isNotFound())
-                .andExpect(mvcResult -> mvcResult.getResolvedException()
-                        .getClass().equals(ResponseStatusException.class));
-
-    }
-
-
-
-
-
+//    @Autowired
+//    MainController mainController;
+//
+//    @Autowired
+//    RoomRepository roomRepository;
+//
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    @AfterEach
+//    public void resetDb() {
+//        roomRepository.deleteAll();
+//    }
+//
+//    private Room createRoom(String name, String country){
+//        Room room = new Room(name, country);
+//        return roomRepository.save(room);
+//    }
+//
 //
 //    @Test
-//    public void givenId_whenGetExistingRoom_thenStatus200andRoomReturned_thenTurnLight() throws Exception {
+//    public void contextLoads() {
+//        assertThat(mainController).isNotNull();
+//    }
 //
+//
+//    @Test
+//    public void givenRooms_whenGetRooms_thenStatus200() throws Exception {
+//        createRoom("test room", "BELARUS");
+//        createRoom("test room2", "RUSSIA");
+//        mockMvc.perform(
+//                get("/rooms"))
+//                .andExpect(status().isOk())
+//                .andExpect(content().string(containsString("test room")))
+//                .andExpect(content().string(containsString("BELARUS")))
+//                .andExpect(content().string(containsString("test room2")))
+//                .andExpect(content().string(containsString("RUSSIA")));
+//    }
+//
+//
+//    @Test
+//    public void givenId_whenGetExistingRoom_thenStatus200andRoomReturned() throws Exception {
+//        long id = createRoom("test room", "BELARUS").getId();
+//        mockMvc.perform(
+//                get("/rooms/{id}", id))
+//                .andExpect(status().isOk())
+//                .andExpect(content().string(containsString("test room")))
+//                .andExpect(content().string(containsString("BELARUS")));
+//    }
+//
+//    @Test
+//    public void givenId_whenGetNotExistingRoom_thenStatus404anExceptionThrown() throws Exception {
+//
+//        mockMvc.perform(
+//                get("/rooms/1"))
+//                .andExpect(status().isNotFound())
+//                .andExpect(mvcResult -> mvcResult.getResolvedException()
+//                        .getClass().equals(ResponseStatusException.class));
 //
 //    }
-
+//
+//
 
 }
